@@ -1,0 +1,3 @@
+storage/shared/Download
+storage/shared/DCIM
+storage/shared/documents
