@@ -21,5 +21,5 @@ then
 else
     # Outputs an android notification if any restic command reported an error,
     # and pareses the output to the notification body
-    termux-notification --icon "warning" -t "Restic backup error" -c "$ERROR"
+    termux-notification --icon "warning" -t "Restic backup error" -c "$ERROR" --button1 "Retry?" --button1-action ./data/data/com.termux/files/home/termux_backup
 fi
