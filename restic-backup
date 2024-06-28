@@ -1,13 +1,12 @@
 #!/usr/bin/bash
 
-# Sources ".profile" for restic specific variables,
-# otherwise termux-job-scheduler won't parse them.
+# Sources ".profile" for restic variables
 source /data/data/com.termux/files/home/.profile
 
-# Parses possible errors into $ERROR to later pipe it to termux-notification
+# Parses possible errors into $ERROR
 ERROR+=$((restic unlock --quiet) 2>&1)
 
-# Only files or directories specified in ".dir_list.txt" are backed-up
+# Files or directories specified in ".dir_list.txt" are backed-up
 ERROR+=$((restic backup --files-from .dir_list.txt --tag mi9tpro --no-scan --quiet) 2>&1)
 ERROR+=$((restic check --quiet) 2>&1)
 
@@ -16,10 +15,9 @@ ERROR+=$((restic forget --prune --keep-daily 30 --keep-monthly 12 --keep-yearly 
 
 if [ -z "$ERROR" ];
 then
-    # Outputs an android notification if backup and repo check were successful
+    # Android notification if both backup and repo check were successful
     termux-notification --icon "done" -t "Restic backup successful"
 else
-    # Outputs an android notification if any restic command reported an error,
-    # and pareses the output to the notification body
+    # Android notification if any of the previous commands reported an error
     termux-notification --icon "warning" -t "Restic backup error" -c "$ERROR" --button1 "Retry?" --button1-action ./data/data/com.termux/files/home/restic-backup
 fi
